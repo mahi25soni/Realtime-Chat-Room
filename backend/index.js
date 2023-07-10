@@ -1,6 +1,7 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const {ConnectDatabase} = require("../backend/extras/mongodb.connect")
+const userRoute = require("./src/admin/user.route")
 require('dotenv').config()
 
 
@@ -10,9 +11,7 @@ app.use(bodyParser.urlencoded  ( {extended:false} ) )
 app.use(bodyParser.json());
 
 
-app.get("/", (req, res)=> {
-    res.send("home page hai sir ye toh")
-} )
+app.use("/", userRoute)
 
 const starting_up = async () => {
     try {
