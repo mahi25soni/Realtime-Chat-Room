@@ -6,16 +6,20 @@ const userSchema = new mongoose.Schema({
     },
     email : {
         type : String,
-        require : [true , "Enter your email address"]
+        required : [true , "Enter your email address"]
     },
     phone_number : {
         type : String,
-        require : [true , "Enter your phone number"]
+        required : [true , "Enter your phone number"]
     },
     password : {
         type : String,
-        require : [true, "Enter you password"]
+        required : [true, "Enter you password"]
     }
 })
 
 const user = new mongoose.model("user", userSchema)
+
+module.exports = {
+    user
+}

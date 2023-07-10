@@ -10,9 +10,9 @@ const  registerPage = (req, res) => {
 const register = async (req, res, next) => {
     try{    
     req.body.password = await hash(req.body.password, 10)
-    const newadmin = new admin(req.body)
-    await newadmin.save()   
-    res.send(newadmin)
+    const newuser = new user(req.body)
+    await newuser.save()   
+    res.send(newuser)
     }
     catch(e){
         next(e)
@@ -33,8 +33,8 @@ const login = async (req, res) => {
             if(!comparePass){
                 return res.status(401).send("Password does not matches")
             }
-            jwt.sign({role:"admin", userId : user.id, email : user.email},
-            "adminsecretpower", (err, token)=> {
+            jwt.sign({role:"user", userId : user.id, email : user.email},
+            "usersecretpower", (err, token)=> {
                 if(err) {
                     return res.send(err)
                 }
@@ -54,7 +54,7 @@ const login = async (req, res) => {
 const viewAll = async (req, res, next) => {
     try{
 
-        const all_data = await admin.find().exec()
+        const all_data = await user.find().exec()
         res.send(all_data)
     }
     catch(e) {

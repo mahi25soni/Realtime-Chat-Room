@@ -1,5 +1,6 @@
 const express = require("express")
 const bodyParser = require("body-parser")
+const cookieParser = require("cookie-parser")
 const {ConnectDatabase} = require("../backend/extras/mongodb.connect")
 const userRoute = require("./src/admin/user.route")
 require('dotenv').config()
@@ -9,6 +10,7 @@ require('dotenv').config()
 const app = express()
 app.use(bodyParser.urlencoded  ( {extended:false} ) )
 app.use(bodyParser.json());
+app.use(cookieParser())
 
 
 app.use("/", userRoute)
