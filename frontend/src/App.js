@@ -1,12 +1,11 @@
 import './App.css';
-import lendpage from './assets/lendpage_image.png'
+import Landpage from './componets/Landpage';
 
 function App() {
   return (
-    <h1 className="text-3xl margin">
-    Hello world!
-    <img src={lendpage} alt="lendpage_image" />
-  </h1>
+    <>
+    <Landpage></Landpage>
+    </>
   );
 }
 
