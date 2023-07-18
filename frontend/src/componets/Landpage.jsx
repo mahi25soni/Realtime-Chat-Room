@@ -15,13 +15,13 @@ export default function Landpage(props) {
 
   return (
     <>
-      <div className="h-screen">
-        <div className="flex justify-center py-12">
-          <div className=" w-1/3">
+      <div className="flex h-screen justify-center items-center ">
+        <div className="flex justify-center">
+          <div className=" w-full">
             <img className="w-full h-full" src={lendpage} alt="endpage_image" />
           </div>
 
-          <div className=" w-1/3">
+          <div className=" w-full">
             {takedo}
           </div>
         </div>
