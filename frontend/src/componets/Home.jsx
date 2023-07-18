@@ -5,13 +5,13 @@ import Chatbox from "./Chatbox";
 export default function Home() {
   return (
     <>
-      <div className=" flex bg-gray-500 border-red-400 border-4 h-screen justify-center items-center ">
-        <div className="flex w-4/5 h-4/5">
+      <div className=" flex  border-red-400 border-4 h-screen justify-center items-center home">
+        <div className="flex w-4/5 h-4/5 bg-slate-500 bg-opacity-50">
 
-          <div className=" bg-blue-500 w-1/4">
+          <div className=" w-1/4 p-4 flex flex-col">
                 <Sidename></Sidename>
           </div>
-          <div className=" bg-red-500 w-3/4 ">
+          <div className="  w-3/4 p-4">
             <Chatbox></Chatbox>
           </div>
         </div>

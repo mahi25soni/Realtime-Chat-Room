@@ -4,9 +4,38 @@
 @tailwind components;
 @tailwind utilities;
 
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: black;
+}
+
 @layer base {
   body {
     background-image: url("./assets/889937_purple, lilac, sky in foggy night with stars. _xl-beta-v2-2-2.png");
+    background-size: 100vw 100vh;
+    background-repeat: no-repeat;
+  }
+
+  .home {
+    
+
+    background-image: url("./assets/401637_Purple sky, small shining stars, and beneath it li_xl-beta-v2-2-2.png");
     background-size: 100vw 100vh;
     background-repeat: no-repeat;
   }
