@@ -1,6 +1,8 @@
 const {user} = require("../../models/models")
 const { hash , compare} = require("bcrypt")
 const jwt  = require("jsonwebtoken")
+const cookieParser = require("cookie-parser")
+
 
 
 const  registerPage = (req, res) => {
@@ -40,6 +42,7 @@ const login = async (req, res) => {
                 }
                 else{
                     req.headers.authorization = token
+                    res.cookie("login_token" , token)
                     return res.send(token)
 
 
