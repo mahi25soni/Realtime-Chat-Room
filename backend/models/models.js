@@ -15,7 +15,11 @@ const userSchema = new mongoose.Schema({
     password : {
         type : String,
         required : [true, "Enter you password"]
-    }
+    },
+    chatrooms : [{
+        type : mongoose.Types.ObjectId,
+        ref : 'chatRoom'
+    }],
 })
 const user = new mongoose.model("user", userSchema)
 
@@ -23,6 +27,12 @@ const chatRoomSchema = new mongoose.Schema({
     name : {
         type : String
     },
+    users : [
+        {
+            type : mongoose.Types.ObjectId,
+            ref : 'user'
+        }
+    ],
     chats : [
         {
             type : mongoose.Types.ObjectId,

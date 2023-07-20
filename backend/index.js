@@ -3,6 +3,7 @@ const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const {ConnectDatabase} = require("../backend/extras/mongodb.connect")
 const userRoute = require("./src/admin/user.route")
+const chatroomRoute = require("./src/chat-message/chat-message.route")
 require('dotenv').config()
 
 
@@ -14,6 +15,7 @@ app.use(cookieParser())
 
 
 app.use("/", userRoute)
+app.use("/chatroom", chatroomRoute)
 
 const starting_up = async () => {
     try {

@@ -2,9 +2,10 @@ const jwt = require("jsonwebtoken")
 require('dotenv').config()
 
 
-function verifyAdmin(req, res, next) {
+const verifyAdmin = (req, res, next) => {
     const token = req.headers.authorization
     // const token = req.cookies["login_token"]
+    console.log(req.headers.authorization)
 
     if(!token){
         return res.status(401).json({message : "No token provided"})
@@ -15,6 +16,7 @@ function verifyAdmin(req, res, next) {
         }
         else{
             req.user = decoded
+            console.log("ye token wala hai ", req.user)
             next()
         }
     })

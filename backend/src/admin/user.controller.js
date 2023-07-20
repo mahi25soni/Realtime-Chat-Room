@@ -2,6 +2,8 @@ const {user} = require("../../models/models")
 const { hash , compare} = require("bcrypt")
 const jwt  = require("jsonwebtoken")
 const cookieParser = require("cookie-parser")
+require('dotenv').config()
+
 
 
 
@@ -26,17 +28,17 @@ const loginPage = (req, res) => {
 }
 
 const login = async (req, res) => {
-    const user = await user.findOne({"email" : req.body.email}).exec() // FindOne return a object, find returns a list
-        if(!user){
+    const required_user = await user.findOne({"email" : req.body.email}).exec() // FindOne return a object, find returns a list
+        if(!required_user){
             return res.status(404).send("No Such user exists")
         }
         else {
-            const comparePass = await compare(req.body.password, user.password)
+            const comparePass = await compare(req.body.password, required_user.password)
             if(!comparePass){
                 return res.status(401).send("Password does not matches")
             }
-            jwt.sign({role:"user", userId : user.id, email : user.email},
-            "usersecretpower", (err, token)=> {
+            jwt.sign({userId : required_user.id, email : required_user.email, chatroom_id: required_user.chatroom_id},
+            process.env.JSON_SECRET_KEY, (err, token)=> {
                 if(err) {
                     return res.send(err)
                 }
