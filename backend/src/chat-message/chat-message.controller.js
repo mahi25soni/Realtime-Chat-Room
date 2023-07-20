@@ -16,13 +16,22 @@
  }
 
  const get_all_users_chatroom = async (req, res) => {
-    const users = await chatRoom.find({_id : req.params.id}).exec()
+    const users = await chatRoom.find({_id : req.params.chatroom_id}).exec()
     res.send(users)
  }
 
 
- const send_message = (req, res) => {
-    
+ const send_message = async (req, res) => {
+    const new_message = new chatRoomMessage({
+        user_id : req.user.userId,
+        chatroom_id : req.params.chatroom_id,
+        message : req.body.message
+    })
+    await new_message.save()
+
+    const add_message_array = await chatRoom.findByIdAndUpdate(req.params.chatroom_id, {"$push" : {"chats" : new_message}}, {new : true}).exec()
+    res.send(add_message_array)
+
  }
 
 

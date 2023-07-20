@@ -5,7 +5,7 @@ const { verifyAdmin } = require("../../middlewares/tokenAuth")
 
 router.route("/create_chatroom").post(add_chatroom)
 router.route("/user").post(verifyAdmin, add_user_chatroom)
-router.route("/user/:id").get(get_all_users_chatroom)
-router.route("/message").post(send_message)
+router.route("/user/:chatroom_id").get(get_all_users_chatroom)
+router.route("/message/:chatroom_id").post(verifyAdmin,send_message)
 
 module.exports = router

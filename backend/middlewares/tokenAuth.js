@@ -4,8 +4,6 @@ require('dotenv').config()
 
 const verifyAdmin = (req, res, next) => {
     const token = req.headers.authorization
-    // const token = req.cookies["login_token"]
-    console.log(req.headers.authorization)
 
     if(!token){
         return res.status(401).json({message : "No token provided"})
@@ -16,7 +14,6 @@ const verifyAdmin = (req, res, next) => {
         }
         else{
             req.user = decoded
-            console.log("ye token wala hai ", req.user)
             next()
         }
     })
