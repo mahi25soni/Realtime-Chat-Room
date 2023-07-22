@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const userSchema = new mongoose.Schema({
-    name : {
+    username : {
         type : String
     },
     email : {
@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     },
     phone_number : {
         type : String,
-        required : [true , "Enter your phone number"]
+        required : [true , "signEnter your phone number"]
     },
     password : {
         type : String,
