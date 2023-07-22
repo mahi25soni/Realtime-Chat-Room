@@ -1,10 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios'
 
 const base_url = "http://localhost:5000/login"
 
 export default function Login() {
+  const history = useNavigate()
+
   function loggingIn(e) {
     e.preventDefault();
     const temp_object = {
@@ -12,8 +14,14 @@ export default function Login() {
       password: e.target.elements["password"].value,
     };
     axios.post(base_url, temp_object).then(function (response) {
-      console.log("Your response", response.data);
+      localStorage.setItem("authorization",response.data);
     });
+
+
+    setTimeout(() => {
+      history("/home")
+    }, 0);
+
   }
   return (
     <>

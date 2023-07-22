@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import axios from 'axios';
 
 const base_url = "http://localhost:5000/register"
 
 export default function Signup() {
+  const history = useNavigate()
+
   function signingUp(e){
     e.preventDefault()
     const temp_object = {
@@ -17,6 +19,8 @@ export default function Signup() {
     .then(function(response) {
       console.log("Your response", response.data);
     })
+
+    history("/")
   }
   return (
     <>

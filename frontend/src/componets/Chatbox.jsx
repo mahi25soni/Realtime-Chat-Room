@@ -10,12 +10,11 @@ function send_message(e){
     setMessageArray(messageArray.concat(e.target.elements.your_message.value))
     e.target.elements.your_message.value=""
 }
-console.log(messageArray)
   return (
     <>
     <div className='p-4 absolute right-0 bottom-16' id='chat_feed'>
-  {messageArray.map((data, index) => (
-    <h1 className='bg-blue-400 text-white rounded-lg px-2 py-1 mb-2'>{data}</h1>
+  {messageArray.map((data, key) => (
+    <h1 key={key} className='bg-blue-400 text-white rounded-lg px-2 py-1 mb-2'>{data}</h1>
   ))}
 </div>
 
