@@ -33,11 +33,12 @@
   }
 
   .home {
-    
-
     background-image: url("./assets/401637_Purple sky, small shining stars, and beneath it li_xl-beta-v2-2-2.png");
     background-size: 100vw 100vh;
     background-repeat: no-repeat;
+  }
+  #add_genre * {
+    background-color: white;
   }
 }
 
