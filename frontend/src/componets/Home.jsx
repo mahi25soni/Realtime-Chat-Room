@@ -10,16 +10,16 @@ export default function Home() {
   const [auth_token, setAuth_token] = useState("")
 
   useEffect(() => {
-    setTimeout(() => {
+    // setTimeout(() => {
       if(!localStorage.getItem("authorization")){
         history("/")
       }
       else {
         setAuth_token(localStorage.getItem("authorization"))
       }
-    }, 1000);
+    // }, 3000);
 
-  })
+  }, [])
   return (
     <>
       <div className=" flex h-screen justify-center items-center home">

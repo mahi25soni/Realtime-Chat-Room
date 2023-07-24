@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios'
 
-const base_url = "http://localhost:5000/login"
+const base_url = "http://127.0.0.1:5000/login"
 
 export default function Login() {
   const history = useNavigate()
@@ -13,16 +13,22 @@ export default function Login() {
       email: e.target.elements["email"].value,
       password: e.target.elements["password"].value,
     };
-    axios.post(base_url, temp_object).then(function (response) {
-      localStorage.setItem("authorization",response.data);
+    axios.post(base_url, temp_object).then((response) => {
+      localStorage.setItem("authorization",response.data.token);
+      console.log(localStorage.getItem("authorization"))
+      history('/home')
     });
-
-
-    setTimeout(() => {
-      history("/home")
-    }, 0);
-
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem('authorization');
+    if (!token) {
+      history('/')
+    } else {
+      history('/home')
+    }
+  }, [])
+
   return (
     <>
       <div className="bg-purple-100 h-full ">
