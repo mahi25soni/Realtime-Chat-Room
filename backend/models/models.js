@@ -18,19 +18,20 @@ const userSchema = new mongoose.Schema({
     },
     chatrooms : [{
         type : mongoose.Types.ObjectId,
-        ref : 'chatRoom'
+        ref : 'chatRoom',
     }],
 })
 const user = new mongoose.model("user", userSchema)
 
 const chatRoomSchema = new mongoose.Schema({
     name : {
-        type : String
+        type : String,
+        unique : true
     },
     users : [
         {
             type : mongoose.Types.ObjectId,
-            ref : 'user'
+            ref : 'user',
         }
     ],
     chats : [

@@ -7,9 +7,7 @@ require('dotenv').config()
 
 
 
-const  registerPage = (req, res) => {
-    res.send("Register ka get")
-}
+
 
 const register = async (req, res, next) => {
     try{    
@@ -23,9 +21,6 @@ const register = async (req, res, next) => {
     }
 }
 
-const loginPage = (req, res) => {
-    res.send("Register ka get")
-}
 
 const login = async (req, res) => {
     const required_user = await user.findOne({"email" : req.body.email}).exec() // FindOne return a object, find returns a list
@@ -45,7 +40,7 @@ const login = async (req, res) => {
                 else{
                     req.headers.authorization = token
                     res.cookie("login_token" , token)
-                    return res.send(token)
+                    return res.json({"token":token, "user_data":required_user})
 
 
                 }
@@ -67,9 +62,7 @@ const viewAll = async (req, res, next) => {
     }
 }
 module.exports = {
-    registerPage,
     register,
-    loginPage,
     login,
     viewAll
 }
