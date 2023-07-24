@@ -6,7 +6,6 @@ const base_url = "http://localhost:5000/chatroom";
 export default function Sidename(props) {
   const [chatrooms, setChatrooms] = useState([]);
   const [user_chatrooms, setUser_chatroom] = useState([]);
-  const [current_room, setCurrent_room] = useState("");
   const [users, setUsers] = useState([]);
 
   const get_all_chatrooms = () => {
@@ -38,9 +37,12 @@ export default function Sidename(props) {
 
   const get_chatroom_id = (e) => {
     const room = document.getElementById("your_genre").value;
-    console.log(room)
-    setCurrent_room(room);
-    users_of_a_room();
+    axios
+      .get(`${base_url}/all_users/${room}`)
+      .then((response) => {
+        setUsers(response.data)
+      }
+)
   };
 
   const add_to_chatroom = () => {
@@ -60,12 +62,6 @@ export default function Sidename(props) {
   }
   
   
-  const users_of_a_room = async () => {
-    console.log("saare chat ", current_room)
-    axios
-      .get(`${base_url}/user/${current_room}`)
-      .then((response) => setUsers(response.data));
-  };
   useEffect(() => {
     get_all_chatrooms();
     get_users_chatroom();
@@ -120,7 +116,7 @@ export default function Sidename(props) {
       <div className="user-names text-white text-center overflow-auto pr-2">
         {users.map((element, key) => (
           <p key={key} className="bg-black mb-2 py-1 rounded-lg">
-            {element.name}
+            {element.username}
           </p>
         ))}
       </div>

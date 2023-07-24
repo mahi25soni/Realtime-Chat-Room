@@ -1,8 +1,11 @@
-import React , {useState, useEffect} from 'react'
+import React , {useState, useEffect, useContext} from 'react'
+import { UserContext } from '../context/UserContext'
 
 export default function Chatbox() {
 
 const [messageArray , setMessageArray] = useState(["chup kar madarchod", "thik hai bhai"])
+const {userdata} = useContext(UserContext)
+
 
 
 function send_message(e){

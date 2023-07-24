@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect , useContext} from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 import axios from 'axios'
 
 const base_url = "http://127.0.0.1:5000/login"
 
 export default function Login() {
+  const {save_user_data} = useContext(UserContext)
   const history = useNavigate()
 
   function loggingIn(e) {
@@ -14,6 +16,7 @@ export default function Login() {
       password: e.target.elements["password"].value,
     };
     axios.post(base_url, temp_object).then((response) => {
+      save_user_data(response.data.user_data)
       localStorage.setItem("authorization",response.data.token);
       console.log(localStorage.getItem("authorization"))
       history('/home')
