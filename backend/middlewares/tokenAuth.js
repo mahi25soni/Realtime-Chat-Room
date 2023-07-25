@@ -4,8 +4,6 @@ require('dotenv').config()
 
 const verifyAdmin = (req, res, next) => {
     const token = req.headers.authorization
-    // console.log(token)
-    // next()
     if(!token){
         return res.status(401).json({message : "No token provided"})
     }

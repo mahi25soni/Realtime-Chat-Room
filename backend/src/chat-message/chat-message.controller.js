@@ -19,7 +19,6 @@
  }
 
  const chatrooms_per_user = async (req, res) => {
-   console.log(req.user)
    const nothing = await user.findOne({"_id":req.user.userId}).populate("chatrooms").exec()
    return res.json(nothing.chatrooms)
  }
@@ -53,11 +52,15 @@
     })
     await new_message.save()
 
-    const add_message_array = await chatRoom.findByIdAndUpdate(req.params.chatroom_id, {"$push" : {"chats" : new_message}}, {new : true}).exec()
-    res.send(add_message_array)
+    await chatRoom.findByIdAndUpdate(req.params.chatroom_id, {"$push" : {"chats":new_message._id}}).exec()
 
+    res.send(new_message)
  }
 
+ const get_all_message = async (req, res) => {
+    const all_messages = await chatRoom.findOne({"_id" : req.params.chatroom_id}).populate("chats").select("chats").exec()
+   res.send(all_messages.chats)
+ }
 
  module.exports = {
     add_chatroom,
@@ -65,5 +68,6 @@
     send_message,
     all_chatrooms,
     chatrooms_per_user,
-    get_all_users_chatroom
+    get_all_users_chatroom,
+    get_all_message
  }

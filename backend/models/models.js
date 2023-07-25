@@ -34,6 +34,7 @@ const chatRoomSchema = new mongoose.Schema({
             ref : 'user',
         }
     ],
+    
     chats : [
         {
             type : mongoose.Types.ObjectId,
