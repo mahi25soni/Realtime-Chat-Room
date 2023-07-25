@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useContext} from "react";
+import { UserContext } from "../context/UserContext";
 import axios from "axios";
 
 const base_url = "http://localhost:5000/chatroom";
 
 export default function Sidename(props) {
+  const {current_room, setCurrent_room, setMessageArray} = useContext(UserContext)
   const [chatrooms, setChatrooms] = useState([]);
   const [user_chatrooms, setUser_chatroom] = useState([]);
   const [users, setUsers] = useState([]);
@@ -36,14 +38,42 @@ export default function Sidename(props) {
 
 
   const get_chatroom_id = (e) => {
-    const room = document.getElementById("your_genre").value;
-    axios
-      .get(`${base_url}/all_users/${room}`)
-      .then((response) => {
-        setUsers(response.data)
-      }
-)
+    e.preventDefault()
+    const room = document.getElementById('your_genre').value;
+    setCurrent_room(room);
   };
+
+  useEffect(() => {
+    if (current_room) {
+      // Check if current_room is not empty before making the API call
+      console.log('set_sldfs', current_room);
+      axios
+        .get(`${base_url}/all_users/${current_room}`)
+        .then((response) => {
+          setUsers(response.data);
+        })
+        .catch((error) => {
+          console.error('Error fetching users:', error);
+        });
+
+        console.log("kssdfhksjfdhsfksjfhslkajfdhskajd")
+        axios.get(`http://localhost:5000/chatroom/message/${current_room}`, {
+          headers : {
+            authorization : localStorage.getItem("authorization")
+          }
+        })
+        .then((response) => {
+          console.log("all message ",response.data)
+          setMessageArray(response.data)
+        })
+        .catch(error => {
+          console.log("ye error hai ", error)
+        })
+    }
+    else {
+      console.log("else wala")
+    }
+  }, [current_room]);
 
   const add_to_chatroom = () => {
     const new_user_of_chatroom = document.getElementById("add_genre").value

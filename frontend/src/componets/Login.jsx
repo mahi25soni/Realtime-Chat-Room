@@ -18,7 +18,6 @@ export default function Login() {
     axios.post(base_url, temp_object).then((response) => {
       save_user_data(response.data.user_data)
       localStorage.setItem("authorization",response.data.token);
-      console.log(localStorage.getItem("authorization"))
       history('/home')
     });
   }
