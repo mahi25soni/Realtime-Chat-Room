@@ -52,6 +52,8 @@
     })
     await new_message.save()
 
+    console.log({"user_id":req.user.userId, "message":req.body.message})
+
     await chatRoom.findByIdAndUpdate(req.params.chatroom_id, {"$push" : {"chats":new_message._id}}).exec()
 
     res.send(new_message)
