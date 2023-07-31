@@ -2,22 +2,21 @@ import React, {useEffect, useState} from "react";
 import Sidename from "./Sidename";
 import Chatbox from "./Chatbox";
 import { useNavigate } from "react-router-dom";
-
+import {SocketProvider} from "../context/SocketContext"
 export default function Home() {
 
   const history = useNavigate()
 
   const [auth_token, setAuth_token] = useState("")
 
+
   useEffect(() => {
-    // setTimeout(() => {
       if(!localStorage.getItem("authorization")){
         history("/")
       }
       else {
         setAuth_token(localStorage.getItem("authorization"))
       }
-    // }, 3000);
 
   }, [])
   return (
@@ -29,7 +28,9 @@ export default function Home() {
                 <Sidename auth_token = {auth_token}></Sidename>
           </div>
           <div className="relative w-3/4">
-            <Chatbox auth_token = {auth_token}></Chatbox>
+            <SocketProvider>
+              <Chatbox  auth_token = {auth_token} />
+              </SocketProvider>
           </div>
         </div>
       </div>

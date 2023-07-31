@@ -1,43 +1,71 @@
-import React , {useState, useEffect, useContext} from 'react'
+import React , {useState, useEffect, useContext, useRef} from 'react'
 import { UserContext } from '../context/UserContext'
 import {io} from 'socket.io-client'
 import axios from "axios";
-
-
-
-const socket = io.connect("http://localhost:5000")
-const base_url = "http://127.0.0.1:5000/chatroom/message"
-
+import SocketContext from '../context/SocketContext';
 
 export default function Chatbox() {
+  const {socketRef} = useContext(SocketContext);
+  const [messageArray, setMessageArray] = useState([]);
+  const [socketInitialized, setSocketInitialized] = useState(false);
+  const base_url = "http://127.0.0.1:5000/chatroom/message";
 
-const {userdata, current_room, messageArray , setMessageArray} = useContext(UserContext)
+  useEffect(() => {
+    if (socketRef.current) {
+      setSocketInitialized(true);
+      socketRef.current.on("get_message", (data) => {
+        console.log("yaha wala data ", data)
+      let current_room = localStorage.getItem("current_room");
+      axios.post(`${base_url}/${current_room}`, {
+        "message": data
+      }, {
+        headers: {
+          authorization: localStorage.getItem("authorization")
+        }
+      })
+      .then((response) => {
+        setMessageArray(prevMessageArray => [...prevMessageArray, response.data]);
+      })
+      .catch(error => {
+        console.log("Error: ", error);
+      });
+    });
+    }
+  }, [socketRef]);
+
+  function send_message(e) {
+    e.preventDefault();
+    let new_message = e.target.elements.your_message.value;
+    e.target.elements.your_message.value = "";
+    console.log("Sending message: ", new_message);
+    // Use the socket instance stored in socketRef.current for emitting
+    socketRef.current.emit("send_message", new_message);
+  }
 
 
+  function get_all_message() {
 
-function send_message(e){
-    e.preventDefault()
-    let new_message = e.target.elements.your_message.value
-    e.target.elements.your_message.value=""
-    socket.emit("send_message", new_message)
-    socket.on("get_message", (data) => {
-      console.log("data data data ", data)
-      setMessageArray(messageArray.concat({"message":data}))
-    })
-    axios.post(`${base_url}/${current_room}`, {
-      "message":new_message
-    }, {
-      headers : {
-        authorization : localStorage.getItem("authorization")
-      }
-    })
-    .then((response) => {
-    })
-    .catch(error => {
-      console.log("ye error hai ", error)
-    })
-}
+    let current_room = localStorage.getItem("current_room")
 
+    if(current_room){
+      axios.get(`${base_url}/${current_room}`, {
+        headers : {
+          authorization : localStorage.getItem("authorization")
+        }
+      })
+      .then((response) => {
+        setMessageArray(response.data)
+      })
+      .catch(error => {
+        console.log("ye error hai ", error)
+      })
+    }
+  }
+  
+  useEffect(() => {
+  get_all_message()
+  
+}, [])
 
 
 

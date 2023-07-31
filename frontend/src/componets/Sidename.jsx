@@ -5,10 +5,12 @@ import axios from "axios";
 const base_url = "http://localhost:5000/chatroom";
 
 export default function Sidename(props) {
-  const {current_room, setCurrent_room, setMessageArray} = useContext(UserContext)
+  const {current_room, setCurrent_room, saving_message_array} = useContext(UserContext)
   const [chatrooms, setChatrooms] = useState([]);
   const [user_chatrooms, setUser_chatroom] = useState([]);
   const [users, setUsers] = useState([]);
+
+
 
   const get_all_chatrooms = () => {
     axios
@@ -40,13 +42,13 @@ export default function Sidename(props) {
   const get_chatroom_id = (e) => {
     e.preventDefault()
     const room = document.getElementById('your_genre').value;
-    setCurrent_room(room);
+    localStorage.setItem("current_room", room)
+    setCurrent_room(room)
   };
+
 
   useEffect(() => {
     if (current_room) {
-      // Check if current_room is not empty before making the API call
-      console.log('set_sldfs', current_room);
       axios
         .get(`${base_url}/all_users/${current_room}`)
         .then((response) => {
@@ -56,19 +58,6 @@ export default function Sidename(props) {
           console.error('Error fetching users:', error);
         });
 
-        console.log("kssdfhksjfdhsfksjfhslkajfdhskajd")
-        axios.get(`http://localhost:5000/chatroom/message/${current_room}`, {
-          headers : {
-            authorization : localStorage.getItem("authorization")
-          }
-        })
-        .then((response) => {
-          console.log("all message ",response.data)
-          setMessageArray(response.data)
-        })
-        .catch(error => {
-          console.log("ye error hai ", error)
-        })
     }
     else {
       console.log("else wala")
