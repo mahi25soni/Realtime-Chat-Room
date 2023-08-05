@@ -2,35 +2,49 @@ import React , {useState, useEffect, useContext, useRef} from 'react'
 import { UserContext } from '../context/UserContext'
 import {io} from 'socket.io-client'
 import axios from "axios";
-import SocketContext from '../context/SocketContext';
 
 export default function Chatbox() {
-  const {socketRef} = useContext(SocketContext);
+  const socketRef = useRef(null);
   const [messageArray, setMessageArray] = useState([]);
-  const [socketInitialized, setSocketInitialized] = useState(false);
+  const [current_room, setCurrent_room] = useState(localStorage.getItem("current_room"))
+  const [auth_token , setAuth_token] = useState(localStorage.getItem("authorization"))
   const base_url = "http://127.0.0.1:5000/chatroom/message";
+  const { userdata } = useContext(UserContext);
 
   useEffect(() => {
-    if (socketRef.current) {
-      setSocketInitialized(true);
+    console.log("checking first use effect");
+    if (!socketRef.current) {
+      console.log("socket ref hai yaa nahi")
+      socketRef.current = io.connect("http://localhost:5000");
+
       socketRef.current.on("get_message", (data) => {
-        console.log("yaha wala data ", data)
-      let current_room = localStorage.getItem("current_room");
-      axios.post(`${base_url}/${current_room}`, {
-        "message": data
-      }, {
-        headers: {
-          authorization: localStorage.getItem("authorization")
-        }
-      })
-      .then((response) => {
-        setMessageArray(prevMessageArray => [...prevMessageArray, response.data]);
-      })
-      .catch(error => {
-        console.log("Error: ", error);
+
+        console.log("Received message: ", data);
+        axios.post(`${base_url}/${current_room}`, {
+          "message": data
+        }, {
+          headers: {
+            authorization: auth_token
+          }
+        })
+        .then((response) => {
+          setMessageArray(prevMessageArray => [...prevMessageArray, response.data]);
+        })
+        .catch(error => {
+          console.log("Error: ", error);
+        });
       });
-    });
+
+      socketRef.current.on("disconnect", () => {
+        console.log("This user is disconnected");
+      });
     }
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
   }, [socketRef]);
 
   function send_message(e) {
@@ -38,8 +52,7 @@ export default function Chatbox() {
     let new_message = e.target.elements.your_message.value;
     e.target.elements.your_message.value = "";
     console.log("Sending message: ", new_message);
-    // Use the socket instance stored in socketRef.current for emitting
-    socketRef.current.emit("send_message", new_message);
+    socketRef.current.emit("send_message", {new_message, current_room, auth_token});
   }
 
 

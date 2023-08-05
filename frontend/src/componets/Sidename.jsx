@@ -49,6 +49,7 @@ export default function Sidename(props) {
 
   useEffect(() => {
     if (current_room) {
+      
       axios
         .get(`${base_url}/all_users/${current_room}`)
         .then((response) => {

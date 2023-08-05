@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import Sidename from "./Sidename";
 import Chatbox from "./Chatbox";
 import { useNavigate } from "react-router-dom";
-import {SocketProvider} from "../context/SocketContext"
 export default function Home() {
 
   const history = useNavigate()
@@ -28,9 +27,7 @@ export default function Home() {
                 <Sidename auth_token = {auth_token}></Sidename>
           </div>
           <div className="relative w-3/4">
-            <SocketProvider>
               <Chatbox  auth_token = {auth_token} />
-              </SocketProvider>
           </div>
         </div>
       </div>
